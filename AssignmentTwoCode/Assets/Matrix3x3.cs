@@ -264,9 +264,38 @@ public class Matrix3x3{
 
 		return matrix;
     }
+    public static Matrix4x4 RotateCustom(Vector3 angles)
+    {
 
 
-	public static Matrix3x3 Translate (Vector3 d)
+
+        Matrix4x4 Rx = new Matrix4x4();
+        Rx.SetRow(0, new Vector4(1.0f, 0.0f, 0.0f, 0.0f));
+        Rx.SetRow(1, new Vector4(0.0f, Mathf.Cos(angles.x), -Mathf.Sin(angles.x), 0.0f));
+        Rx.SetRow(2, new Vector4(0.0f, Mathf.Sin(angles.x), Mathf.Cos(angles.x), 0.0f));
+        Rx.SetRow(3, new Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+
+        Matrix4x4 Ry = new Matrix4x4();
+        Ry.SetRow(0, new Vector4(Mathf.Cos(angles.y), 0.0f, Mathf.Sin(angles.y), 0.0f));
+        Ry.SetRow(1, new Vector4(0.0f, 1.0f, 0.0f, 0.0f));
+        Ry.SetRow(2, new Vector4(-Mathf.Sin(angles.y), 0.0f, Mathf.Cos(angles.y), 0.0f));
+        Ry.SetRow(3, new Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+
+
+        Matrix4x4 Rz = new Matrix4x4();
+        Rz.SetRow(0, new Vector4(Mathf.Cos(angles.z), -Mathf.Sin(angles.z), 0.0f, 0.0f));
+        Rz.SetRow(1, new Vector4(Mathf.Sin(angles.z), Mathf.Cos(angles.z), 0.0f, 0.0f));
+        Rz.SetRow(2, new Vector4(0.0f, 0.0f, 1.0f, 0.0f));
+        Rz.SetRow(3, new Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+
+
+
+        Matrix4x4 rotationMatrix = Rz * Ry * Rx;
+
+        return rotationMatrix;
+    }
+
+    public static Matrix3x3 Translate (Vector3 d)
     {
 		Matrix3x3 matrix = new Matrix3x3();
 		matrix.SetRow(0, new Vector3(1.0f, 0.0f, d.x));

@@ -122,61 +122,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &286454711
+--- !u!1 &331699946 stripped
 GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 4921251058568054903, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+  m_PrefabInstance: {fileID: 3048888928183921900}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 286454712}
-  - component: {fileID: 286454713}
-  m_Layer: 0
-  m_Name: Base
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &286454712
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 286454711}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &286454713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 286454711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 987fd55be9845a84d874132d8aa0af1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  child: {fileID: 1470501463}
-  jointLocation: {x: 0, y: 0, z: 0}
-  jointOffset: {x: 0, y: 0, z: 0}
-  angle: 0
-  lastAngle: 0
-  limbVertexLocations: []
-  points: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  baseGameObject: {fileID: 286454711}
-  upperArmGameObject: {fileID: 0}
-  lowerArmGameObject: {fileID: 0}
-  wristGameObject: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,6 +264,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &547314889 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6338023919740186818, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+  m_PrefabInstance: {fileID: 3048888928183921900}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,178 +351,145 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1000413508
+--- !u!1 &1261740622 stripped
 GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 247668820329531760, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+  m_PrefabInstance: {fileID: 3048888928183921900}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1000413510}
-  - component: {fileID: 1000413509}
-  m_Layer: 0
-  m_Name: Lower Arm
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1000413509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000413508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 987fd55be9845a84d874132d8aa0af1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  child: {fileID: 2118804444}
-  jointLocation: {x: 0, y: 2, z: 1}
-  jointOffset: {x: 0, y: 2, z: 1}
-  angle: 0
-  lastAngle: 0
-  limbVertexLocations: []
-  points: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  baseGameObject: {fileID: 0}
-  upperArmGameObject: {fileID: 0}
-  lowerArmGameObject: {fileID: 1000413508}
-  wristGameObject: {fileID: 0}
---- !u!4 &1000413510
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000413508}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1470501463
+--- !u!1 &2118239120 stripped
 GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2781573223634774211, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+  m_PrefabInstance: {fileID: 3048888928183921900}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1470501465}
-  - component: {fileID: 1470501464}
-  m_Layer: 0
-  m_Name: Upper Arm
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1470501464
-MonoBehaviour:
+--- !u!1001 &3048888928183921900
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1470501463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 987fd55be9845a84d874132d8aa0af1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  child: {fileID: 1000413508}
-  jointLocation: {x: 0, y: 2, z: 1}
-  jointOffset: {x: 0, y: 2, z: 1}
-  angle: 0
-  lastAngle: 0
-  limbVertexLocations: []
-  points: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  baseGameObject: {fileID: 0}
-  upperArmGameObject: {fileID: 1470501463}
-  lowerArmGameObject: {fileID: 0}
-  wristGameObject: {fileID: 0}
---- !u!4 &1470501465
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1470501463}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2118804444
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2118804446}
-  - component: {fileID: 2118804445}
-  m_Layer: 0
-  m_Name: Wrist
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2118804445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2118804444}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 987fd55be9845a84d874132d8aa0af1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  child: {fileID: 0}
-  jointLocation: {x: 0, y: 0, z: 1}
-  jointOffset: {x: 0, y: 2, z: 1}
-  angle: 100
-  lastAngle: 0
-  limbVertexLocations: []
-  points: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  baseGameObject: {fileID: 0}
-  upperArmGameObject: {fileID: 0}
-  lowerArmGameObject: {fileID: 0}
-  wristGameObject: {fileID: 2118804444}
---- !u!4 &2118804446
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2118804444}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3908733341864245320, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: lowerArmGameObject
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3908733341864245320, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: upperArmGameObject
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4921251058568054903, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: m_Name
+      value: QUTjr
+      objectReference: {fileID: 0}
+    - target: {fileID: 5224848180566678013, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: angle
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5224848180566678013, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: child
+      value: 
+      objectReference: {fileID: 1261740622}
+    - target: {fileID: 5224848180566678013, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: jointOffset.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5224848180566678013, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: jointLocation.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399466526852468319, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399466526852468319, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399466526852468319, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399466526852468319, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399466526852468319, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399466526852468319, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399466526852468319, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399466526852468319, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399466526852468319, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399466526852468319, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6445264662600069889, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: baseGameObject
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6445264662600069889, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: wristGameObject
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6445264662600069889, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: upperArmGameObject
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7257097206954847342, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: angle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7257097206954847342, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: child
+      value: 
+      objectReference: {fileID: 547314889}
+    - target: {fileID: 7459236342821281305, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: baseGameObject
+      value: 
+      objectReference: {fileID: 331699946}
+    - target: {fileID: 7459236342821281305, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: wristGameObject
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459236342821281305, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: lowerArmGameObject
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459236342821281305, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: upperArmGameObject
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9088410310351406379, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: angle
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9088410310351406379, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: child
+      value: 
+      objectReference: {fileID: 2118239120}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 286454712}
-  - {fileID: 1470501465}
-  - {fileID: 1000413510}
-  - {fileID: 2118804446}
+  - {fileID: 3048888928183921900}
