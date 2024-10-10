@@ -233,7 +233,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -356,6 +356,56 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 247668820329531760, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
   m_PrefabInstance: {fileID: 3048888928183921900}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1766447789
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1766447791}
+  - component: {fileID: 1766447790}
+  m_Layer: 0
+  m_Name: Ground
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1766447790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766447789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 987fd55be9845a84d874132d8aa0af1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  baseGameObject: {fileID: 0}
+  upperArmGameObject: {fileID: 0}
+  lowerArmGameObject: {fileID: 0}
+  wristGameObject: {fileID: 0}
+  groundGameObject: {fileID: 1766447789}
+--- !u!4 &1766447791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766447789}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2118239120 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2781573223634774211, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
@@ -481,6 +531,10 @@ PrefabInstance:
       propertyPath: child
       value: 
       objectReference: {fileID: 2118239120}
+    - target: {fileID: 9088410310351406379, guid: 91eaa9704c9e3d043a0f21f33f6bda72, type: 3}
+      propertyPath: groundGameObject
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -492,4 +546,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
+  - {fileID: 1766447791}
   - {fileID: 3048888928183921900}

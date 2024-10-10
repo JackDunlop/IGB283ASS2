@@ -1,6 +1,9 @@
+using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.U2D.IK;
 
@@ -11,6 +14,7 @@ public class Movement : MonoBehaviour
     private GameObject upperArmGameObject; // Upper Arm
     private GameObject lowerArmGameObject; // Lower Arm
     private GameObject wristGameObject; // Wrist
+    private GameObject groundGameObject;
 
     public GameObject child;
     public Vector3 jointLocation;
@@ -19,14 +23,15 @@ public class Movement : MonoBehaviour
     public float lastAngle;
 
 
-    private float wristDirection = -1;
-
-
+    private float jumpDirection = -1f;
+    private float jumpSpeed = 10f;
+    public float jumpHeight = 0.5f;
 
     private float direction = -1f;
     private float translationSpeed = 5;
 
-
+    private float groundY = 0.25f;
+    private float peakY;
     public void MoveByOffset(Vector3 offset)
     {
         Matrix3x3 T = Matrix3x3.Translate(offset);
@@ -152,6 +157,9 @@ public class Movement : MonoBehaviour
 
 
         }
+
+        groundGameObject = GameObject.Find("Ground");
+
         if (child != null)
         {
             child.GetComponent<Movement>().MoveByOffset(jointOffset);
@@ -162,6 +170,10 @@ public class Movement : MonoBehaviour
         {
             meshFilter.mesh.RecalculateBounds();
         }
+
+       
+
+        peakY = groundY + jumpHeight;
 
 
     }
@@ -224,6 +236,7 @@ public class Movement : MonoBehaviour
     {
         IGB283Vector3 currentPosition = GetObjectCenter(gameObject);
 
+
         IGB283Vector3 targetPosition = direction < 0 ? pointTwo : pointOne;
         IGB283Vector3 directionVector = (targetPosition - currentPosition).normalized;
         float distanceToMove = translatingSpeed * Time.deltaTime;
@@ -243,6 +256,7 @@ public class Movement : MonoBehaviour
             gameObject.GetComponent<Movement>().FlipRotationSignRecursively();
         
         }
+      
     }
 
 
@@ -274,14 +288,10 @@ public class Movement : MonoBehaviour
         }
     }
 
-    void Nodding()
+    void Nodding(GameObject gameObject, float range, float speed)
     {
-        if (upperArmGameObject != null)
-        {
-            float amplitude = 25f;
-            float frequency = 5f;
-
-            float newAngle = Mathf.Sin(Time.time * frequency) * amplitude;
+        
+            float newAngle = Mathf.Sin(Time.time * speed) * range;
 
           
             float deltaAngle = rotationSign * (newAngle - lastAngle);
@@ -295,9 +305,31 @@ public class Movement : MonoBehaviour
             {
                 meshFilter.mesh.RecalculateBounds();
             }
-        }
+      
     }
 
+
+
+
+    void Jump(GameObject gameObject, float jumpSpeed, ref float jumpDirection)
+    {
+        IGB283Vector3 currentPosition = GetObjectCenter(gameObject);
+        float targetY = (jumpDirection > 0) ? peakY : groundY;
+
+        float step = jumpSpeed * Time.deltaTime;
+        float newY = Mathf.MoveTowards(currentPosition.y, targetY, step);
+        float deltaY = newY - currentPosition.y;
+
+  
+        IGB283Vector3 movementVector = new IGB283Vector3(0, deltaY, 0);
+        gameObject.GetComponent<Movement>().MoveByOffset(movementVector);
+
+
+        if (Mathf.Abs(newY - targetY) <= 0.01f)
+        {
+            jumpDirection *= -1; 
+        }
+    }
 
 
 
@@ -305,14 +337,32 @@ public class Movement : MonoBehaviour
     {
      
         
-        IGB283Vector3 pointOne = new IGB283Vector3(15, 0, 0);
-        IGB283Vector3 pointTwo = new IGB283Vector3(-15, 0, 0);
+        IGB283Vector3 pointOne = new IGB283Vector3(30, 0.5f, 0);
+        IGB283Vector3 pointTwo = new IGB283Vector3(-30, 0.5f, 0);
+      
+   
+       
         if (qutjrGameObject != null)
         {
+            IGB283Vector3 currentPostion = GetObjectCenter(this.gameObject);
+            IGB283Vector3 postionOfGameObjectBetweenGround = new IGB283Vector3(currentPostion.x, 0, currentPostion.z);
+            IGB283Vector3 targetJump = new IGB283Vector3(currentPostion.x, jumpHeight, currentPostion.z);
+            Jump(qutjrGameObject, jumpSpeed, ref jumpDirection);
             MoveObjectBetweenTwoPoints(pointOne, pointTwo, qutjrGameObject, ref direction, translationSpeed);
-        }
-        Nodding();
+         
 
+        }
+
+        if (lowerArmGameObject != null)
+        {
+            Nodding(lowerArmGameObject, 25, 5);
+
+        }
+        if (upperArmGameObject != null)
+        {
+            Nodding(upperArmGameObject, 15, 5);
+
+        }
 
 
 
