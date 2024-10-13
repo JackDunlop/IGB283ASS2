@@ -20,6 +20,9 @@ public class Objects : MonoBehaviour
     public GameObject wristGameObject; // Wrist
     public GameObject groundGameObject;
 
+    public GameObject leftWallGameObject;
+    public GameObject rightWallGameObject;
+
 
 
 
@@ -80,12 +83,34 @@ public class Objects : MonoBehaviour
         {
             IGB283Vector3[] groundVertices = new IGB283Vector3[]
            {
-            new IGB283Vector3(30f,0,0),
-            new IGB283Vector3(-30f,0,0),
-            new IGB283Vector3(30f,-2.5f,0),
-            new IGB283Vector3(-30f,-2.5f,0),
+            new IGB283Vector3(31f,0,0),
+            new IGB283Vector3(-31f,0,0),
+            new IGB283Vector3(31f,-2.5f,0),
+            new IGB283Vector3(-31f,-2.5f,0),
            };
             CreateGameObjects(groundGameObject, groundVertices, new int[] { 0,2,1, 1, 2, 3 }, 1f,1f,1f);
+        }  
+        if (rightWallGameObject)
+        {
+            IGB283Vector3[] rightWallVertices = new IGB283Vector3[]
+           {
+            new IGB283Vector3(31f,-2.5f,0),
+            new IGB283Vector3(32.5f,-2.5f,0),
+            new IGB283Vector3(31,10,0),
+            new IGB283Vector3(32.5f,10,0),
+           };
+            CreateGameObjects(rightWallGameObject, rightWallVertices, new int[] { 0,2,1, 1, 2, 3 }, 1f,1f,1f);
+        } 
+        if (leftWallGameObject)
+        {
+            IGB283Vector3[] leftWallVertices = new IGB283Vector3[]
+           {
+            new IGB283Vector3(-31f,-2.5f,0),
+            new IGB283Vector3(-32.5f,-2.5f,0),
+            new IGB283Vector3(-31,10,0),
+            new IGB283Vector3(-32.5f,10,0),
+           };
+            CreateGameObjects(leftWallGameObject, leftWallVertices, new int[] { 0,2,1, 1, 2, 3 }, 1f,1f,1f);
         }
 
 

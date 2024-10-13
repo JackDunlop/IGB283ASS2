@@ -23,16 +23,24 @@ public class Movement : MonoBehaviour
     public float lastAngle;
 
 
+    private bool isSlumpted= false;
+
     private float highJumpDirection = 1f;
     private float highJumpSpeed = 20f;
     private float highJumpHeight = 5f;
     private bool isHighJumping = false;
 
+
+    private List<IGB283Vector3> jumpCurvePoints = new List<IGB283Vector3>();
+    private float forwardJumpT = 0f; 
+    private float forwardJumpDuration = 1f;
+    private bool isJumpForwarding = false;
+
     private float forwardJumpDirection = 1f;
-    private float forwardJumpSpeed = 10f;
-    private float forwardJumpHeight = 3f;
-    private float forwardJumpDistance = 5f;
-    private bool isFowardJumping = false;
+    private float forwardJumpSpeed = 2f;
+    private float forwardJumpHeight = 2f;
+    private float forwardJumpDistance = 10f;
+    private bool isForwardJumping = false;
 
     private float jumpDirection = -1f;
     private float jumpSpeed = 5f;
@@ -135,7 +143,6 @@ public class Movement : MonoBehaviour
 
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         switch (gameObject.name)
@@ -143,6 +150,8 @@ public class Movement : MonoBehaviour
             case "QUTjr":
                 {
                     qutjrGameObject = GameObject.Find("QUTjr");
+      
+
                 }
                 break;
 
@@ -334,6 +343,7 @@ public class Movement : MonoBehaviour
 
   
         IGB283Vector3 movementVector = new IGB283Vector3(0, deltaY, 0);
+       
         gameObject.GetComponent<Movement>().MoveByOffset(movementVector);
 
 
@@ -343,28 +353,82 @@ public class Movement : MonoBehaviour
         }
     }
 
-    void JumpFoward(GameObject gameObject, float jumpSpeed, ref float jumpDirection, float jumpHeight, float jumpDistance)
+
+
+    private bool IsOnGround()
     {
+     
+        float currentY = GetObjectCenter(qutjrGameObject).y;
+        bool onGround = Mathf.Abs(currentY - groundY) <= 0.1f;
+   
+        return onGround;
+    }
+
+    public IGB283Vector3 CalculateBSplinePoint(float t, IGB283Vector3 p0, IGB283Vector3 p1, IGB283Vector3 p2)
+    {
+    
+        float u = 1 - t;
+        float tt = t * t;
+        float uu = u * u;
+
+        IGB283Vector3 point = (p0 * uu) + (p1 * 2 * u * t) + (p2 * tt);
+        return point;
+    }
+    void JumpForward(GameObject gameObject, float jumpSpeed, float jumpHeight, float jumpDistance, ref float direction, IGB283Vector3 startPosition, List<IGB283Vector3> jumpCurvePoints, float forwardJumpDuration)
+    {
+        if (forwardJumpT == 0f)
+        {
+            jumpCurvePoints.Clear();
+            jumpCurvePoints.Add(startPosition);
+
+            IGB283Vector3 peakPoint = new IGB283Vector3(
+                startPosition.x + (jumpDistance / 2) * direction,
+                startPosition.y + jumpHeight,
+                startPosition.z
+            );
+            jumpCurvePoints.Add(peakPoint);
+
+            IGB283Vector3 endPoint = new IGB283Vector3(
+                startPosition.x + jumpDistance * direction,
+                groundY,
+                startPosition.z
+            );
+            jumpCurvePoints.Add(endPoint);
+        }
+
+        forwardJumpT += (jumpSpeed * Time.deltaTime) / forwardJumpDuration;
+        forwardJumpT = Mathf.Clamp01(forwardJumpT);
+
+        IGB283Vector3 p0 = jumpCurvePoints[0];
+        IGB283Vector3 p1 = jumpCurvePoints[1];
+        IGB283Vector3 p2 = jumpCurvePoints[2];
+        IGB283Vector3 newPosition = CalculateBSplinePoint(forwardJumpT, p0, p1, p2); 
         IGB283Vector3 currentPosition = GetObjectCenter(gameObject);
-        float peakY = groundY + jumpHeight;
+        IGB283Vector3 targetPosition = newPosition; // clamping x is buggy with movebyoffset, probs something to do with hows its being called recursively since the child object is throwing all the errors
+        IGB283Vector3 movementVector = targetPosition - currentPosition;
+      
 
-        float targetY = (jumpDirection > 0) ? peakY : groundY;
-
-        float step = jumpSpeed * Time.deltaTime;
-        float newY = Mathf.MoveTowards(currentPosition.y, targetY, step);
-        float deltaY = newY - currentPosition.y;
-        float newX = Mathf.MoveTowards(currentPosition.x, currentPosition.x + jumpDistance, step);
-        float deltaX = newX - currentPosition.x;    
-
-        IGB283Vector3 movementVector = new IGB283Vector3(deltaX, deltaY, 0);
         gameObject.GetComponent<Movement>().MoveByOffset(movementVector);
 
-
-        if (Mathf.Abs(newY - targetY) <= 0.01f)
+ 
+        if (forwardJumpT >= 1f)
         {
-            jumpDirection *= -1;
+            IsOnGround();
+            isForwardJumping = false;
+            forwardJumpT = 0f;
+        }
+
+
+        if (targetPosition.x >= 30f || targetPosition.x <= -30f) 
+        {
+            direction *= -1f;
+            gameObject.GetComponent<Movement>().RotateAroundPointY(jointLocation, new Vector3(0, 180, 0));
+            gameObject.GetComponent<Movement>().FlipRotationSignRecursively();
+            forwardJumpT = 0f; 
         }
     }
+
+
 
 
     void ChangeDirection(KeyCode keyCode, ref float directionGameObject, GameObject gameObject, float desiredDirection)
@@ -377,82 +441,129 @@ public class Movement : MonoBehaviour
         }
     }
 
-   
+
+    void SlumptGameObject(GameObject gameObject)
+    {
+        bool onGround = IsOnGround();
+        if (!onGround) // If not on ground, move GameObject towards groundY
+        {
+            IGB283Vector3 currentPosition = GetObjectCenter(gameObject);
+
+            float step = jumpSpeed * Time.deltaTime;
+            float newY = Mathf.MoveTowards(currentPosition.y, groundY, step);
+            float deltaY = newY - currentPosition.y;
+
+            // Only change the Y component
+            IGB283Vector3 movementVector = new IGB283Vector3(0, deltaY, 0);
+
+            gameObject.GetComponent<Movement>().MoveByOffset(movementVector);
+        }
+    }
+
+
 
 
     void Update()
     {
         IGB283Vector3 pointOne = new IGB283Vector3(30, 0.5f, 0);
         IGB283Vector3 pointTwo = new IGB283Vector3(-30, 0.5f, 0);
+        if (Input.GetKeyDown(KeyCode.Z) && !isSlumpted)
+        {
 
+            isSlumpted = true;
+        }
         if (qutjrGameObject != null)
         {
-            if (Input.GetKeyDown(KeyCode.W) && !isHighJumping)
+            if (isSlumpted)
             {
-                isHighJumping = true;
-                highJumpDirection = 1f;
-            }
+                // Nodding(qutjrGameObject, 100, 10);
+                SlumptGameObject(qutjrGameObject);
+                //child.GetComponent<Movement>().RotateAroundPointWithoutUpdatingJoints(jointLocation, deltaAngle);
 
-            if (Input.GetKeyDown(KeyCode.S) && !isFowardJumping) { 
-                isFowardJumping = true;
-                forwardJumpDirection = 1f;
-            }
+                //lastAngle = newAngle;
 
-            if (isHighJumping)
-            {
-                
-                Jump(qutjrGameObject, highJumpSpeed, ref highJumpDirection, highJumpHeight);
-                if (highJumpDirection < 0 && GetObjectCenter(qutjrGameObject).y <= groundY + 0.1f)
-                {
-                    if (Input.GetKey(KeyCode.W))
-                    {
-                        isHighJumping = true; 
-                        highJumpDirection = 1f; 
-                    }
-                    else
-                    {
-                        isHighJumping = false; 
-                    }
-                }
+                //MeshFilter meshFilter = this.gameObject.GetComponent<MeshFilter>();
+                //if (meshFilter != null)
+                //{
+                //    meshFilter.mesh.RecalculateBounds();
+                //}
 
-
-            }
-            else if (isFowardJumping) // doesnt work fix tmrw
-            {
-                JumpFoward(qutjrGameObject, forwardJumpSpeed, ref forwardJumpDirection, forwardJumpDirection, forwardJumpDistance);
-                if (forwardJumpDirection < 0 && GetObjectCenter(qutjrGameObject).y <= groundY + 0.1f)
-                {
-                    if (Input.GetKey(KeyCode.S))
-                    {
-                        isFowardJumping = true;
-                        forwardJumpDirection = 1f;
-                    }
-                    else
-                    {
-                        isFowardJumping = false;
-                    }
-                }
             }
             else
             {
-               
-                Jump(qutjrGameObject, jumpSpeed, ref jumpDirection, jumpHeight);
+
+                if (Input.GetKeyDown(KeyCode.W) && !isHighJumping)
+                {
+                    isHighJumping = true;
+                    highJumpDirection = 1f;
+                }
+
+                if (Input.GetKeyDown(KeyCode.S) && !isForwardJumping)
+                {
+                    isForwardJumping = true;
+                    forwardJumpDirection = 1f;
+                    forwardJumpT = 0f;
+                }
+
+
+                if (isHighJumping)
+                {
+
+                    Jump(qutjrGameObject, highJumpSpeed, ref highJumpDirection, highJumpHeight);
+                    if (highJumpDirection < 0 && GetObjectCenter(qutjrGameObject).y <= groundY + 0.1f)
+                    {
+                        if (Input.GetKey(KeyCode.W))
+                        {
+                            isHighJumping = true;
+                            highJumpDirection = 1f;
+                        }
+                        else
+                        {
+                            isHighJumping = false;
+                        }
+                    }
+
+                }
+                else if (isForwardJumping)
+                {
+                    IGB283Vector3 startPostion = GetObjectCenter(qutjrGameObject);
+                    JumpForward(qutjrGameObject, forwardJumpSpeed, forwardJumpHeight, forwardJumpDistance, ref direction, startPostion, jumpCurvePoints, forwardJumpDuration);
+                    if (forwardJumpDirection < 0 && GetObjectCenter(qutjrGameObject).y <= groundY + 0.1f)
+                    {
+                        if (Input.GetKey(KeyCode.S))
+                        {
+                            isForwardJumping = true;
+                            forwardJumpDirection = 1f;
+                        }
+                        else
+                        {
+                            isForwardJumping = false;
+                        }
+                    }
+                }
+
+
+
+                if (isHighJumping == false && isForwardJumping == false && isSlumpted == false)
+                {
+
+                    MoveObjectBetweenTwoPoints(pointOne, pointTwo, qutjrGameObject, ref direction, translationSpeed);
+                    Jump(qutjrGameObject, jumpSpeed, ref jumpDirection, jumpHeight);
+
+                }
+                ChangeDirection(KeyCode.D, ref direction, qutjrGameObject, 1f);
+                ChangeDirection(KeyCode.A, ref direction, qutjrGameObject, -1f);
             }
 
-            if (isHighJumping == false && isFowardJumping == false)
-            {
-
-                MoveObjectBetweenTwoPoints(pointOne, pointTwo, qutjrGameObject, ref direction, translationSpeed);
-
-            }
-            ChangeDirection(KeyCode.D, ref direction, qutjrGameObject, 1f);
-            ChangeDirection(KeyCode.A, ref direction, qutjrGameObject, -1f);
         }
 
-        if (lowerArmGameObject != null)
+        if (lowerArmGameObject != null && !isSlumpted)
         {
             Nodding(lowerArmGameObject, 25, 5);
         }
     }
 
 }
+
+
+
