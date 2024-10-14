@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5037241941436707809
+--- !u!1 &796074127219635682
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 564371320741532049}
-  - component: {fileID: 2606550317278002027}
-  - component: {fileID: 4149519258697578621}
+  - component: {fileID: 7910239956739841611}
+  - component: {fileID: 9167965910248747851}
   m_Layer: 0
-  m_Name: Wrist
+  m_Name: Left Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &564371320741532049
+--- !u!4 &7910239956739841611
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5037241941436707809}
+  m_GameObject: {fileID: 796074127219635682}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2606550317278002027
+--- !u!114 &9167965910248747851
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5037241941436707809}
+  m_GameObject: {fileID: 796074127219635682}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 987fd55be9845a84d874132d8aa0af1b, type: 3}
@@ -49,21 +48,7 @@ MonoBehaviour:
   baseGameObject: {fileID: 0}
   upperArmGameObject: {fileID: 0}
   lowerArmGameObject: {fileID: 0}
-  wristGameObject: {fileID: 5037241941436707809}
---- !u!114 &4149519258697578621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5037241941436707809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1139b40dc83180849b08200c5c53f439, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  child: {fileID: 0}
-  jointLocation: {x: 0, y: 1, z: 0}
-  jointOffset: {x: 0, y: 1, z: 0}
-  angle: 0
-  lastAngle: 0
+  wristGameObject: {fileID: 0}
+  groundGameObject: {fileID: 0}
+  leftWallGameObject: {fileID: 796074127219635682}
+  rightWallGameObject: {fileID: 0}

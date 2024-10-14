@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.U2D.IK;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class Movement : MonoBehaviour
 {
@@ -16,18 +17,26 @@ public class Movement : MonoBehaviour
     private GameObject wristGameObject; // Wrist
     private GameObject groundGameObject;
 
+    private IGB283Vector3[] originalVertices; 
+
     public GameObject child;
     public Vector3 jointLocation;
     public Vector3 jointOffset;
     public float angle;
     public float lastAngle;
-
+    public float lastNodAngle = 0f;
+    public float lastSlumpAngle = 0f;
 
     private bool isSlumpted= false;
+    private bool hasReturnedToOriginalAngle = false; 
+    private const float angleThreshold = 1f;
+    private float slumptTimer = 0f;
+    private float slumptDuration = 5f;
+
 
     private float highJumpDirection = 1f;
-    private float highJumpSpeed = 20f;
-    private float highJumpHeight = 5f;
+    private float highJumpSpeed = 10f;
+    private float highJumpHeight = 3f;
     private bool isHighJumping = false;
 
 
@@ -39,7 +48,7 @@ public class Movement : MonoBehaviour
     private float forwardJumpDirection = 1f;
     private float forwardJumpSpeed = 2f;
     private float forwardJumpHeight = 2f;
-    private float forwardJumpDistance = 10f;
+    private float forwardJumpDistance = 5f;
     private bool isForwardJumping = false;
 
     private float jumpDirection = -1f;
@@ -50,6 +59,12 @@ public class Movement : MonoBehaviour
     private float translationSpeed = 5;
 
     private float groundY = 0.25f;
+
+
+    private const int QUTjrStartAngle = -20;
+    private const int UpperArmStartAngle = 60;
+    private const int LowerArmStartAngle = 40;
+
 
     public void MoveByOffset(Vector3 offset)
     {
@@ -145,12 +160,18 @@ public class Movement : MonoBehaviour
 
     void Start()
     {
+
+        if (child != null)
+        {
+            child.GetComponent<Movement>().MoveByOffset(jointOffset);
+
+        }
         switch (gameObject.name)
         {
             case "QUTjr":
                 {
                     qutjrGameObject = GameObject.Find("QUTjr");
-      
+                    child.GetComponent<Movement>().RotateAroundPoint(jointLocation, QUTjrStartAngle, lastAngle);
 
                 }
                 break;
@@ -158,6 +179,7 @@ public class Movement : MonoBehaviour
             case "Upper Arm":
                 {
                     upperArmGameObject = GameObject.Find("Upper Arm");
+                    child.GetComponent<Movement>().RotateAroundPoint(jointLocation, UpperArmStartAngle, lastAngle);
                 }
                 break;
 
@@ -165,6 +187,7 @@ public class Movement : MonoBehaviour
             case "Lower Arm":
                 {
                     lowerArmGameObject = GameObject.Find("Lower Arm");
+                    child.GetComponent<Movement>().RotateAroundPoint(jointLocation, LowerArmStartAngle, lastAngle);
                 }
                 break;
 
@@ -172,6 +195,7 @@ public class Movement : MonoBehaviour
             case "Wrist":
                 {
                     wristGameObject = GameObject.Find("Wrist");
+            
                 }
                 break;
 
@@ -180,14 +204,12 @@ public class Movement : MonoBehaviour
 
         groundGameObject = GameObject.Find("Ground");
 
-        if (child != null)
-        {
-            child.GetComponent<Movement>().MoveByOffset(jointOffset);
-            child.GetComponent<Movement>().RotateAroundPoint(jointLocation, angle, lastAngle);
-        }
+      
+      
         MeshFilter meshFilter = this.gameObject.GetComponent<MeshFilter>();
         if (meshFilter != null)
         {
+             originalVertices = meshFilter.mesh.vertices.Clone() as IGB283Vector3[];
             meshFilter.mesh.RecalculateBounds();
         }
 
@@ -280,7 +302,7 @@ public class Movement : MonoBehaviour
 
 
 
-    public void RotateAroundPointWithoutUpdatingJoints(Vector3 point, float deltaAngle)
+    public void RotateAroundPointWithoutUpdatingJoints(IGB283Vector3 point, float deltaAngle)
     {
         float deltaAngleRad = deltaAngle * Mathf.Deg2Rad;
 
@@ -305,26 +327,6 @@ public class Movement : MonoBehaviour
         {
             child.GetComponent<Movement>().RotateAroundPointWithoutUpdatingJoints(point, deltaAngle);
         }
-    }
-
-    void Nodding(GameObject gameObject, float range, float speed)
-    {
-        
-            float newAngle = Mathf.Sin(Time.time * speed) * range;
-
-          
-            float deltaAngle = rotationSign * (newAngle - lastAngle);
-
-            child.GetComponent<Movement>().RotateAroundPointWithoutUpdatingJoints(jointLocation, deltaAngle);
-
-            lastAngle = newAngle;
-
-            MeshFilter meshFilter = this.gameObject.GetComponent<MeshFilter>();
-            if (meshFilter != null)
-            {
-                meshFilter.mesh.RecalculateBounds();
-            }
-      
     }
 
 
@@ -444,19 +446,43 @@ public class Movement : MonoBehaviour
 
     void SlumptGameObject(GameObject gameObject)
     {
-        bool onGround = IsOnGround();
-        if (!onGround) // If not on ground, move GameObject towards groundY
+        IGB283Vector3 currentPosition = GetObjectCenter(gameObject);
+        float step = jumpSpeed * Time.deltaTime;
+        float newY = Mathf.MoveTowards(currentPosition.y, groundY, step);
+        float deltaY = newY - currentPosition.y;
+        IGB283Vector3 movementVector = new IGB283Vector3(0, deltaY, 0);
+        gameObject.GetComponent<Movement>().MoveByOffset(movementVector);
+    }
+
+    private void RestoreOriginalVertices()
+    {
+        MeshFilter meshFilter = this.gameObject.GetComponent<MeshFilter>();
+        if (meshFilter != null && originalVertices != null)
         {
-            IGB283Vector3 currentPosition = GetObjectCenter(gameObject);
+            meshFilter.mesh.vertices = originalVertices.Select(v => (Vector3)v).ToArray();
+            meshFilter.mesh.RecalculateBounds();
+        }
 
-            float step = jumpSpeed * Time.deltaTime;
-            float newY = Mathf.MoveTowards(currentPosition.y, groundY, step);
-            float deltaY = newY - currentPosition.y;
+      
 
-            // Only change the Y component
-            IGB283Vector3 movementVector = new IGB283Vector3(0, deltaY, 0);
+        if (child != null)
+        {
+            child.GetComponent<Movement>().RestoreOriginalVertices();
+        }
+    }
 
-            gameObject.GetComponent<Movement>().MoveByOffset(movementVector);
+
+
+    void Nodding(GameObject gameObject, float range, float speed)
+    {
+        float newAngle = Mathf.Sin(Time.time * speed) * range;
+        float deltaAngle = rotationSign * (newAngle - lastNodAngle);
+        child.GetComponent<Movement>().RotateAroundPointWithoutUpdatingJoints(jointLocation, deltaAngle);
+        lastNodAngle = newAngle;
+        MeshFilter meshFilter = this.gameObject.GetComponent<MeshFilter>();
+        if (meshFilter != null)
+        {
+            meshFilter.mesh.RecalculateBounds();
         }
     }
 
@@ -467,31 +493,63 @@ public class Movement : MonoBehaviour
     {
         IGB283Vector3 pointOne = new IGB283Vector3(30, 0.5f, 0);
         IGB283Vector3 pointTwo = new IGB283Vector3(-30, 0.5f, 0);
+   
         if (Input.GetKeyDown(KeyCode.Z) && !isSlumpted)
         {
-
             isSlumpted = true;
+            hasReturnedToOriginalAngle = false;
+          
+           
+           
         }
-        if (qutjrGameObject != null)
+        if (isSlumpted && child != null)
         {
-            if (isSlumpted)
+
+            slumptTimer += Time.deltaTime;
+
+            if (slumptTimer <= slumptDuration)
             {
-                // Nodding(qutjrGameObject, 100, 10);
-                SlumptGameObject(qutjrGameObject);
-                //child.GetComponent<Movement>().RotateAroundPointWithoutUpdatingJoints(jointLocation, deltaAngle);
 
-                //lastAngle = newAngle;
 
-                //MeshFilter meshFilter = this.gameObject.GetComponent<MeshFilter>();
-                //if (meshFilter != null)
-                //{
-                //    meshFilter.mesh.RecalculateBounds();
-                //}
 
+
+                if (qutjrGameObject != null) {
+
+                    SlumptGameObject(qutjrGameObject);
+                }
+
+                if (child != null && qutjrGameObject != null )
+                {
+
+                    float normalizedTime = slumptTimer / slumptDuration;
+                    float newAngle = Mathf.Sin(normalizedTime * Mathf.PI) * 75;
+                    float deltaAngle = rotationSign * (newAngle - lastSlumpAngle);
+                    child.GetComponent<Movement>().RotateAroundPointWithoutUpdatingJoints(jointLocation, deltaAngle);
+                    lastSlumpAngle = newAngle;
+                    MeshFilter meshFilter = this.gameObject.GetComponent<MeshFilter>();
+                    if (meshFilter != null)
+                    {
+                        meshFilter.mesh.RecalculateBounds();
+                    }
+                }
+                
             }
             else
             {
 
+                isSlumpted = false;
+                hasReturnedToOriginalAngle = true;
+                RestoreOriginalVertices();
+                ResetLastAngleRecursively();
+                lastSlumpAngle = 0;
+                slumptTimer = 0f;
+
+
+            }
+        }
+        if (qutjrGameObject != null && !isSlumpted)
+        {
+           
                 if (Input.GetKeyDown(KeyCode.W) && !isHighJumping)
                 {
                     isHighJumping = true;
@@ -553,13 +611,14 @@ public class Movement : MonoBehaviour
                 }
                 ChangeDirection(KeyCode.D, ref direction, qutjrGameObject, 1f);
                 ChangeDirection(KeyCode.A, ref direction, qutjrGameObject, -1f);
-            }
+            
 
         }
 
-        if (lowerArmGameObject != null && !isSlumpted)
+        if (upperArmGameObject != null && !isSlumpted)
         {
-            Nodding(lowerArmGameObject, 25, 5);
+
+            Nodding(upperArmGameObject, 25, 5);
         }
     }
 
