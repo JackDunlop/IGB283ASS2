@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -32,7 +33,7 @@ public class Objects : MonoBehaviour
     }
 
 
-    void Awake()
+void Awake()
     {
         
         if (baseGameObject != null)
@@ -44,7 +45,15 @@ public class Objects : MonoBehaviour
             new IGB283Vector3(1,0,0),
             new IGB283Vector3(1,1,0),
             };
-            CreateGameObjects(baseGameObject, baseVertices, new int[] { 0,2,1,0,3,2 }, 0.8f, 0.3f, 0.3f);
+            if (gameObject.name == "QUTjr")
+            {
+                CreateGameObjects(baseGameObject, baseVertices, new int[] { 0, 2, 1, 0, 3, 2 }, 0.8f, 0.3f, 0.3f);
+            }
+            else
+            {
+                CreateGameObjects(baseGameObject, baseVertices, new int[] { 0, 2, 1, 0, 3, 2 }, 1f, 1f, 1f);
+            }
+            
         }
         if (upperArmGameObject != null)
         {
@@ -55,7 +64,15 @@ public class Objects : MonoBehaviour
             new IGB283Vector3(0.25f,2,0),
             new IGB283Vector3(0.25f,0,0),
             };
-            CreateGameObjects(upperArmGameObject, upperArmVertices, new int[] { 1,2,0,2,3,0}, 0.8f, 0.3f, 0.3f);
+           
+            if (gameObject.name == "Upper Arm")
+            {
+                CreateGameObjects(upperArmGameObject, upperArmVertices, new int[] { 1, 2, 0, 2, 3, 0 }, 0.8f, 0.3f, 0.3f);
+            }
+            else
+            {
+                CreateGameObjects(upperArmGameObject, upperArmVertices, new int[] { 1, 2, 0, 2, 3, 0 },1f, 1f, 1f);
+            }
         }
         if (lowerArmGameObject != null)
         {
@@ -66,7 +83,15 @@ public class Objects : MonoBehaviour
             new IGB283Vector3(0.25f,2,0),
             new IGB283Vector3(0.25f,0,0),
             };
-            CreateGameObjects(lowerArmGameObject, lowerArmVertices, new int[] { 1, 2, 0, 2, 3, 0 }, 0.8f, 0.3f, 0.3f);
+           
+            if (gameObject.name == "Lower Arm")
+            {
+                CreateGameObjects(lowerArmGameObject, lowerArmVertices, new int[] { 1, 2, 0, 2, 3, 0 }, 0.8f, 0.3f, 0.3f);
+            }
+            else
+            {
+                CreateGameObjects(lowerArmGameObject, lowerArmVertices, new int[] { 1, 2, 0, 2, 3, 0 }, 1f,1f, 1f);
+            }
         }
         if (wristGameObject != null)
         {
@@ -77,7 +102,15 @@ public class Objects : MonoBehaviour
             new IGB283Vector3(-2,1,0),
            
             };
-            CreateGameObjects(wristGameObject, wristVertices, new int[] { 0,1,2}, 0.8f, 0.3f, 0.3f);
+          
+            if (gameObject.name == "Wrist")
+            {
+                CreateGameObjects(wristGameObject, wristVertices, new int[] { 0, 1, 2 }, 0.8f, 0.3f, 0.3f);
+            }
+            else
+            {
+                CreateGameObjects(wristGameObject, wristVertices, new int[] { 0, 1, 2 }, 1f, 1f, 1f);
+            }
         }
         if (groundGameObject)
         {
